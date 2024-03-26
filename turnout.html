@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Indian Parliamentary Elections Turnout Scatter Plot</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #scatterplot-container {
+        position: relative;
+        margin-top: 20px;
+        display: flex;
+      }
+
+      #scatterplot {
+        flex: 1;
+      }
+
+      #dropdowns {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 20px;
+      }
+
+      select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        font-size: 16px;
+        color: #333;
+        appearance: none; /* Remove default arrow icon */
+        -webkit-appearance: none; /* For Safari */
+        -moz-appearance: none; /* For Firefox */
+        margin-bottom: 10px;
+      }
+
+      select::after {
+        content: "\25BC"; /* Unicode character for the arrow */
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        pointer-events: none;
+      }
+
+      select:focus {
+        outline: none;
+        border-color: #007bff; /* Change border color on focus */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add box shadow on focus */
+      }
+
+      .tooltip {
+        position: absolute;
+        text-align: center;
+        padding: 6px;
+        font: 12px sans-serif;
+        background: #ddd;
+        border: 1px solid #aaa;
+        border-radius: 5px;
+        pointer-events: none;
+      }
+
+      .dot {
+        fill: steelblue;
+        stroke: #fff;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>2019 Parliamentary Elections Turnout</h1>
+    <div id="scatterplot-container">
+      <div id="scatterplot"></div>
+      <div id="dropdowns">
+        <select id="stateDropdown">
+          <option value="all">All States</option>
+        </select>
+        <select id="partyDropdown">
+          <option value="all">All Parties</option>
+        </select>
+      </div>
+    </div>
+
+    <script>
+      d3.csv(
+        "https://raw.githubusercontent.com/Prithvi-k/IIITH-Coursework/main/Year_2_Sem_2/CS4.302_Data_Visualisation/Datasets/2019_elections.csv"
+      )
+        .then((data) => {
+          data.forEach((d) => {
+            d.Turnout = parseFloat(d.Turnout.replace("%", ""));
+          });
+
+          data.sort((a, b) => {
+            return a["#"] - b["#"];
+          });
+
+          const partyColours = {
+            "Aam Aadmi Party": "#0072b0",
+            "All India Anna Dravida Munnetra Kazhagam": "#009546",
+            "All India Majlis-E-Ittehadul Muslimeen": "#0c6b4b",
+            "All India Trinamool Congress": "#20c646",
+            "All India United Democratic Front": "#348017",
+            "All Jharkhand Students Union": "#6827b5",
+            "Apna Dal (Soneylal)": "#27176d",
+            "Bahujan Samaj Party": "#22409a",
+            "Bharatiya Janta Party": "#ff9933",
+            "Biju Janata Dal": "#70a548",
+            "Communist Party Of India": "#cb0922",
+            "Communist Party Of India (Marxist)": "#cc0d0d",
+            "Dravida Munetra Kazhagam": "#ff0d0d",
+            Independent: "black",
+            "Indian National Congress": "#19aaed",
+            "Indian Union Muslim League": "#006600",
+            "Jammu & Kashmir National Conference": "#fe0000",
+            "Janata Dal (Secular)": "#02865a",
+            "Janata Dal (United)": "#003366",
+            "Jharkhand Mukti Morcha": "#337316",
+            "Kerala Congress(M)": "#f48385",
+            "Lok Jan Shakti Party": "#5b006a",
+            "Mizo National Front": "#2e5694",
+            "Naga Peoples Front": "#1717cc",
+            "National People's Party": "#ffca61",
+            "Nationalist Congress Party": "#00b2b2",
+            "Nationalist Democratic Progressive Party": "#ed1b24",
+            "Rashtriya Loktantrik Party": "#ffd42a",
+            "Revolutionary Socialist Party": "#d84c4c",
+            "Samajwadi Party": "#ff2222",
+            "Shiromani Akali Dal": "#0f204a",
+            "Shiv Sena": "#f37020",
+            "Sikkim Krantikari Morcha": "#ed1e26",
+            "Telangana Rashtra Samithi": "#f84996",
+            "Telugu Desam": "#ffed00",
+            "Viduthalai Chiruthaigal Katchi": "#0000ff",
+            "Yuvajana Sramika Rythu Congress Party": "#1569c7",
+          };
+
+          const width = 800;
+          const height = 400;
+          const margin = { top: 20, right: 20, bottom: 30, left: 50 };
+
+          const svg = d3
+            .select("#scatterplot")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr(
+              "transform",
+              "translate(" + margin.left + "," + margin.top + ")"
+            );
+
+          const tooltip = d3
+            .select("body")
+            .append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+          svg
+            .selectAll(".dot")
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("class", "dot")
+            .attr(
+              "cx",
+              (d, i) => i * (width / data.length) + width / data.length / 2
+            )
+            .attr("cy", (d) => height - (d.Turnout / 100) * height)
+            .attr("r", 5)
+            // .style("fill", (d) => partyColours[d.Party])
+            .on("mouseover", (event, d) => {
+              tooltip.transition().duration(200).style("opacity", 0.9);
+              tooltip
+                .html(
+                  "Constituency: " +
+                    d["PC Name"] +
+                    "<br/>State: " +
+                    d.State +
+                    "<br/>Party: " +
+                    d.Party +
+                    "<br/>PC Number: " +
+                    d["#"] +
+                    "<br/>Turnout: " +
+                    d.Turnout +
+                    "%"
+                )
+                .style("left", event.pageX + "px")
+                .style("top", event.pageY - 28 + "px");
+            })
+            .on("mouseout", () => {
+              tooltip.transition().duration(500).style("opacity", 0);
+            });
+
+          const xScale = d3
+            .scaleBand()
+            .domain(data.map((d) => d["#"]))
+            .range([0, width], 100)
+            .padding(0.1);
+
+          svg
+            .append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(
+              d3.axisBottom(xScale).tickValues(
+                xScale.domain().filter(function (d) {
+                  return d % 50 == 0;
+                })
+              )
+            )
+            .selectAll("text")
+            .attr("y", 0)
+            .attr("x", 9)
+            .attr("dy", ".35em")
+            .attr("opacity", 1)
+            .attr("transform", "rotate(90)")
+            .style("text-anchor", "start");
+
+          const yScale = d3.scaleLinear().domain([0, 100]).range([height, 0]);
+
+          svg.append("g").call(d3.axisLeft(yScale));
+
+          const meanTurnout = d3.mean(data, (d) => d.Turnout);
+
+          svg
+            .append("line")
+            .attr("x1", 0)
+            .attr("y1", height - (meanTurnout / 100) * height)
+            .attr("x2", width)
+            .attr("y2", height - (meanTurnout / 100) * height)
+            .attr("stroke", "red")
+            .attr("stroke-width", 2)
+            .attr("stroke-dasharray", "5,5")
+            .on("mouseover", function (event) {
+              tooltip.transition().duration(200).style("opacity", 0.9);
+              tooltip
+                .html("Mean Turnout: " + meanTurnout.toFixed(2) + "%")
+                .style("left", event.pageX + "px")
+                .style("top", event.pageY - 28 + "px");
+            })
+            .on("mouseout", function () {
+              tooltip.transition().duration(500).style("opacity", 0);
+            });
+
+          function updatePlot() {
+            const selectedState =
+              document.getElementById("stateDropdown").value;
+            const selectedParty =
+              document.getElementById("partyDropdown").value;
+
+            console.log(selectedState, selectedParty);
+
+            // Update scatter plot based on filtered data
+            svg
+              .selectAll(".dot")
+              .data(data)
+              .enter()
+              .append("circle")
+              .attr("class", "dot")
+              .merge(svg.selectAll(".dot"))
+              .attr("opacity", (d) => {
+                if (selectedParty !== "all" && selectedState === "all") {
+                  return d.Party === selectedParty ? 1 : 0.5;
+                } else if (selectedParty !== "all" && selectedState !== "all") {
+                  return d.Party === selectedParty && d.State === selectedState
+                    ? 1
+                    : 0.5;
+                } else if (selectedState !== "all" && selectedParty === "all") {
+                  return d.State === selectedState ? 1 : 0.5;
+                } else {
+                  return 1;
+                }
+              })
+              .style("fill", (d) => {
+                if (selectedParty !== "all" && selectedState === "all") {
+                  return d.Party === selectedParty
+                    ? partyColours[d.Party]
+                    : "gray";
+                } else if (selectedParty !== "all" && selectedState !== "all") {
+                  return d.Party === selectedParty && d.State === selectedState
+                    ? partyColours[d.Party]
+                    : "gray";
+                } else {
+                  return "steelblue";
+                }
+              })
+              .attr("r", (d) => {
+                if (selectedState !== "all" && selectedParty === "all") {
+                  return d.State === selectedState ? 9 : 5;
+                } else if (selectedState !== "all" && selectedParty !== "all") {
+                  return d.State === selectedState && d.Party === selectedParty
+                    ? 9
+                    : 5;
+                } else {
+                  return 5;
+                }
+              });
+          }
+
+          const states = [...new Set(data.map((d) => d.State))];
+          states.sort();
+          const stateDropdown = document.getElementById("stateDropdown");
+          states.forEach((state) => {
+            const option = document.createElement("option");
+            option.value = state;
+            option.textContent = state;
+            stateDropdown.appendChild(option);
+          });
+
+          const parties = [...new Set(data.map((d) => d.Party))];
+          parties.sort();
+          const partyDropdown = document.getElementById("partyDropdown");
+          parties.forEach((party) => {
+            const option = document.createElement("option");
+            option.value = party;
+            option.textContent = party;
+            partyDropdown.appendChild(option);
+          });
+
+          document
+            .getElementById("stateDropdown")
+            .addEventListener("change", updatePlot);
+          document
+            .getElementById("partyDropdown")
+            .addEventListener("change", updatePlot);
+
+          updatePlot();
+        })
+        .catch((error) => {
+          console.error("Error loading the data:", error);
+        });
+    </script>
+  </body>
+</html>
