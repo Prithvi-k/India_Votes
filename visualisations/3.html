@@ -90,7 +90,7 @@
             .attr("height", svgHeight);
 
         // Load data from CSV
-        d3.csv("modified_data.csv").then(function(data) {
+        d3.csv("../dataset/modified_data.csv").then(function(data) {
             // Convert string data to numbers
             data.forEach(d => {
                 d.Turnout = parseFloat(d.Turnout.replace(",", ""));

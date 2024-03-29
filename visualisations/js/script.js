@@ -1,4 +1,3 @@
-
 function updateYear() {
   const yearSlider = document.getElementById("yearSlider");
   const year = yearSlider.value;
@@ -15,7 +14,7 @@ function getData() {
   var closest = years.reduce(function (prev, curr) {
     return (Math.abs(curr - year) < Math.abs(prev - year) ? curr : prev);
   });
-  d3.json("data.json").then(function(rawData){
+  d3.json("../../dataset/data.json").then(function(rawData){
     drawchart(rawData , closest);
   });
 }
@@ -44,15 +43,12 @@ async function drawchart(rawData , closest){
     
     const series = stack(processedData);
     
-    const width = 2000;
-    const height = 1500;
     const margin = { top: 20, right: 20, bottom: 20, left: 20 };
-    const innerWidth = width - margin.left - margin.right;
-    const innerHeight = height - margin.top - margin.bottom;
+    const width = window.innerWidth - margin.left - margin.right;
+    const height = window.innerHeight - margin.top - margin.bottom;
     
-    const outerRadius = Math.min(innerWidth-100, innerHeight-100) / 2 - 10;
-    const innerRadius = 200;
-    
+    const outerRadius = Math.min(width, height) / 2 - 10;
+    const innerRadius = 100;
     
     const arc = d3.arc()
     .innerRadius(d => y(d[0]))
@@ -61,7 +57,6 @@ async function drawchart(rawData , closest){
     .endAngle(d => x(d.data.state) + x.bandwidth())
     .padAngle(0.005)
     .padRadius(innerRadius);
-    
     
     const x = d3.scaleBand()
     .domain(states)
@@ -79,10 +74,9 @@ async function drawchart(rawData , closest){
     d3.select("svg").remove();
 
     const svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .attr("viewBox", `0 0 ${width} ${height}`)
-    // .attr("style", "width: 100%; height: auto; font: 10px sans-serif;")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .attr("viewBox", `100 100 100+${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
     .attr("preserveAspectRatio", "xMidYMid meet")
     .append("g")
     .attr("transform", `translate(${width / 2},${height / 2})`);
@@ -90,6 +84,8 @@ async function drawchart(rawData , closest){
     const tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
+    
+    
     
     svg.append("g")
     .selectAll()
@@ -113,77 +109,77 @@ async function drawchart(rawData , closest){
             .html(`State: ${state}<br>Party: ${party || "N/A"}<br>Seats: ${seats}`)
             .style("left", (event.pageX + 10) + "px")
             .style("top", (event.pageY - 28) + "px");
-            // })
           })
           .on("mouseout", function () {
             d3.select(this).style("stroke", "#fff").style("stroke-width", 0.5);
             tooltip.style("opacity", 0);
           });
         
-          console.log("Hemang")
+    const totalConstituencyCount = {};
+    data.forEach(d => {
+      if (!totalConstituencyCount[d.state]) {
+        totalConstituencyCount[d.state] = 0;
+      }
+      totalConstituencyCount[d.state] += d.constituencies_count || 0;
+    });
           
-          const totalConstituencyCount = {};
-          data.forEach(d => {
-            if (!totalConstituencyCount[d.state]) {
-              totalConstituencyCount[d.state] = 0;
-            }
-            totalConstituencyCount[d.state] += d.constituencies_count || 0;
-          });
-          
-          
-          svg.append("g")
-          .selectAll()
-          .data(x.domain())
-          
-          .join("g")
-          .call(g =>g
-            .attr("text-anchor", function (d) { return (x(d) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "end" : "start"; })
-        .attr("transform", function (d) { return "rotate(" + ((x(d) + x.bandwidth() / 2) * 180 / Math.PI - 90) + ")" + "translate(" + ( y(totalConstituencyCount[d]) + 10) + ",0)" })
-        .append("text")
-        .text(function (d) { return  d})
-            .attr("transform", function (d) { return (x(d) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "rotate(180)" : "rotate(0)"; })
-            .style("font-size", "15px").style("fill", "black")
-            .attr("alignment-baseline", "middle")
-            );
+    svg.append("g")
+    .selectAll()
+    .data(x.domain())
+    .join("g")
+    .call(g =>g
+      .attr("text-anchor", function (d) { return (x(d) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "end" : "start"; })
+      .attr("transform", function (d) { return "rotate(" + ((x(d) + x.bandwidth() / 2) * 180 / Math.PI - 90) + ")" + "translate(" + ( y(totalConstituencyCount[d]) + 10) + ",0)" })
+      .append("text")
+      .text(function (d) { return  d})
+      .attr("transform", function (d) { return (x(d) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "rotate(180)" : "rotate(0)"; })
+      .style("font-size", "15px").style("fill", "white")
+      .attr("alignment-baseline", "middle")
+    );
             
-            svg.append("g")
-            .attr("text-anchor", "end")
-            .call(g => g.selectAll("g")
-            .data(y.ticks(10).slice(1))
-            .join("g")
-            .attr("fill", "none")
-            .call(g => g.append("circle")
-            .attr("stroke", "#000")
-            .attr("stroke-opacity", 0.5)
-            .attr("r", y))
-            .call(g => g.append("text")
-            .attr("x", -6)
-            .attr("y", d => -y(d))
-            .attr("dy", "0.35em")
-            .attr("stroke", "#fff")
-            .attr("stroke-width", 5)
-            .text(y.tickFormat(10, "s"))
-            .clone(true)
-            .attr("fill", "#000")
-            .attr("stroke", "none")));
+    svg.append("g")
+    .attr("text-anchor", "end")
+    .call(g => g.selectAll("g")
+      .data(y.ticks(10).slice(1))
+      .join("g")
+      .attr("fill", "none")
+      .call(g => g.append("circle")
+        .attr("stroke", "white")
+        .attr("stroke-opacity", 0.5)
+        .attr("r", y))
+      .call(g => g.append("text")
+        .attr("x", -6)
+        .attr("y", d => -y(d))
+        .attr("dy", "0.35em")
+        .attr("fill", "white")
+        .text(y.tickFormat(10, "s"))
+        .clone(true)
+        .attr("fill", "white")
+        .attr("stroke", "none")
+      )
+    );
             
-            svg.append("g")
-            .attr("transform", `translate(600,20)`) 
-            .selectAll()
-            .data(color.domain())
-            .join("g")
-            .attr("transform", (d, i, nodes) => `translate(0, ${(nodes.length / 2 - i - 1) * 20})`)
-            .call(g => g.append("rect")
-            .attr("width", 18)
-            .attr("height", 18)
-            .attr("fill", color))
-            .call(g => g.append("text")
-            .attr("x", 24)
-            .attr("y", 9)
-            .attr("dy", "0.35em")
-            .text(d => d));
-
+    const legend = svg.append("g")
+      .attr("transform", `translate(-${width/2}, ${-height/2 + 50})`); 
     
-            
-            return svg.node();
-          };
+    const legendItem = legend.selectAll(".legend-item")
+      .data(color.domain())
+      .enter().append("g")
+      .attr("class", "legend-item")
+      .attr("transform", (d, i) => `translate(0, ${i * 20})`);
+
+    legendItem.append("rect")
+      .attr("x", 10)
+      .attr("y", 10)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", color);
+
+    legendItem.append("text")
+      .attr("x", 40)
+      .attr("y", 19)
+      .text(d => d)
+      .attr("fill", "white");
+
+    return svg.node();
+}

@@ -156,8 +156,8 @@ const partyColours = {
         .attr("fill", "black"); 
 }
         Promise.all([
-            d3.json("india_state_geo.json"),
-            d3.json("party_vote_counts.json")
+            d3.json("../dataset/india_state_geo.json"),
+            d3.json("../dataset/party_vote_counts.json")
         ]).then(function(data) {
             const constituencyData = data[0];
             const partyVoteData = data[1];
