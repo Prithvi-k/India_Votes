@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
     <style>
+        * {
+            background-color: #0c1016;
+            color: #ffffff;
+        }
         #container {
             display: flex;
             justify-content: space-between;
@@ -33,13 +37,14 @@
             text-anchor: middle;
         }
         path {
-            stroke: #000;
+            stroke: #ffffff;
             stroke-width: 0.5px;
             fill: #ccc;
         }
     </style>
 </head>
 <body>
+    <h1 style="text-align: center;">Election Day</h1>
     <!-- <svg id="map2"></svg> -->
     <div id="container">
         <svg id="map"></svg>
@@ -130,7 +135,8 @@ const partyColours = {
         .attr("y", (d, i) => yScale(parties[i]))
         .attr("width", d => xScale(d))
         .attr("height", barHeight)
-        .attr("fill", (d, i) => partyColours[parties[i]]); 
+        .attr("fill", (d, i) => partyColours[parties[i]])
+        .attr("stroke", "white");
 
     svg.selectAll(".party-label")
         .data(parties)
@@ -141,7 +147,7 @@ const partyColours = {
         .attr("dy", "0.35em")
         .style("text-anchor", "start")
         .text(d => d)
-        .attr("fill", "black"); 
+        .attr("fill", "white"); 
 
     svg.selectAll(".vote-label")
         .data(partyVoteCounts)
