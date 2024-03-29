@@ -47,7 +47,7 @@ html {
 h1 {
     text-align: center;
     margin-top: 20px;
-    -webkit-text-stroke: 0.5px rgba(0, 255, 242, 0.272); /* Add stroke effect for WebKit-based browsers */
+    -webkit-text-stroke: 0.5px rgba(0, 255, 242, 0.272); 
 }
 
 .cards {
@@ -110,9 +110,7 @@ h1 {
 
 .card-content {
     text-align: center;
-    /* Center align the text */
     padding: 20px;
-    /* Add padding for better readability */
 }
 
 .card-link {
@@ -127,13 +125,11 @@ h1 {
 
 .card-link h2 {
     margin-bottom: 10px;
-    /* Add some space below the heading */
 }
 
 .card-link p {
     font-family: 'Roboto';
     margin: 0;
-    /* Remove default margins for the paragraph */
 }
 
 .card-link:hover {
@@ -157,4 +153,3 @@ h1 {
     transition: all 0.15s ease-in-out;
 }
 
-/*# sourceMappingURL=b.css.map */

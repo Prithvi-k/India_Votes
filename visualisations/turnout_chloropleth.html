@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Indian Map Chloropleth</title>
     <style>
-        /* Add your CSS styles here */
         body,
         html {
             background-color: #0c1016;
@@ -31,9 +30,7 @@
         #map-container {
             flex: 3;
             width: 100%;
-            /* Make the map container take up the full width */
             overflow: hidden;
-            /* Hide overflowing content */
         }
 
         .tooltip {
@@ -57,19 +54,14 @@
             box-sizing: border-box;
         }
 
-        /* Style for the constituency paths */
         .constituency {
             stroke: rgb(0, 0, 0);
-            /* Default boundary color */
             stroke-width: 0.5;
             fill: none;
-            /* No fill */
         }
 
-        /* Style for the constituency paths when hovered over */
         .constituency:hover {
             stroke: rgb(4, 255, 0);
-            /* Change boundary color when hovered over */
             stroke-width: 2;
         }
     </style>
@@ -108,44 +100,33 @@
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script>
-        // Append tooltip element
         const tooltip = d3.select("body").append("div")
             .attr("class", "tooltip")
             .style("opacity", 0);
 
-        // Define the width and height of the SVG
         var width = 1000;
         var height = 800;
 
-        // Create an SVG element
         var svg = d3.select("#india-map")
             .attr("width", width)
             .attr("height", height);
 
-        // Define color scale
         var colorScale = d3.scaleSequential(d3.interpolateBlues);
 
-        // Load GeoJSON data
         d3.json("../dataset/india_pc_2012-17.json").then(function (geojson) {
 
-            // Define a projection for the map (you might need to adjust this)
             var projection = d3.geoMercator()
                 .fitSize([width, height], geojson);
 
-            // Define a path generator
             var path = d3.geoPath()
                 .projection(projection);
 
-            // Load data from CSV file
             d3.csv("../dataset/modified_data.csv").then(function (data) {
 
-                // Add event listener to the year dropdown
                 document.getElementById("year-dropdown").addEventListener("change", function () {
-                    // Redraw the map with new data based on selected year
                     var year = this.value;
 
-                    // Extract turnout data for the selected year
-                    var yearInt = parseInt(year); // Convert year to integer
+                    var yearInt = parseInt(year); 
 
                     var turnoutData = {};
                     data.forEach(function (d) {
