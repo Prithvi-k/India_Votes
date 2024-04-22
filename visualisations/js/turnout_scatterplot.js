@@ -15,7 +15,7 @@ d3.csv("../dataset/2019_elections.csv")
         const margin = { top: 20, right: 20, bottom: 30, left: 50 };
 
         const svg = d3
-            .select("#scatterplot")
+            .select("#turnout-scatterplot")
             .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -28,15 +28,15 @@ d3.csv("../dataset/2019_elections.csv")
         const tooltip = d3
             .select("body")
             .append("div")
-            .attr("class", "tooltip")
+            .attr("class", "turnout-tooltip")
             .style("opacity", 0);
 
         svg
-            .selectAll(".dot")
+            .selectAll(".scatter_dot")
             .data(data)
             .enter()
             .append("circle")
-            .attr("class", "dot")
+            .attr("class", "scatter_dot")
             .attr(
                 "cx",
                 (d, i) => i * (width / data.length) + width / data.length / 2
@@ -182,12 +182,12 @@ d3.csv("../dataset/2019_elections.csv")
 
             // Update scatter plot based on filtered data
             svg
-                .selectAll(".dot")
+                .selectAll(".scatter_dot")
                 .data(data)
                 .enter()
                 .append("circle")
-                .attr("class", "dot")
-                .merge(svg.selectAll(".dot"))
+                .attr("class", "scatter_dot")
+                .merge(svg.selectAll(".scatter_dot"))
                 .attr("opacity", (d) => {
                     if (filteredData.length === 0) {
                         return 0.5; // Reduce opacity if no data is selected

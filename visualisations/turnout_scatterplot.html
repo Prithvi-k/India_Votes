@@ -21,7 +21,7 @@
         align-items: center;
       }
 
-      #scatterplot {
+      #turnout-scatterplot {
         flex: 1;
         max-width: 70vw;
         height: 100%;
@@ -57,13 +57,13 @@
 
       select {
         padding: 10px;
-            font-size: 16px;
-            border: 1px solid steelblue;
-            border-radius: 5px;
-            background-color: #adb9ff;
-            color: rgb(0, 0, 0);
-            width: 100%;
-            box-sizing: border-box;
+        font-size: 16px;
+        border: 1px solid steelblue;
+        border-radius: 5px;
+        background-color: #adb9ff;
+        color: rgb(0, 0, 0);
+        width: 100%;
+        box-sizing: border-box;
       }
 
       select::after {
@@ -81,7 +81,7 @@
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
       }
 
-      .tooltip {
+      .turnout-tooltip {
         position: absolute;
         text-align: center;
         padding: 6px;
@@ -92,8 +92,7 @@
         pointer-events: none;
       }
 
-      .dot {
-        fill: steelblue;
+      .scatter_dot {
         stroke: #383838;
         stroke-width: 1.5px;
       }
@@ -102,7 +101,7 @@
   <body>
     <h1>2019 Parliamentary Elections Turnout</h1>
     <div id="scatterplot-container">
-      <div id="scatterplot"></div>
+      <div id="turnout-scatterplot"></div>
       <div id="secondary-container">
         <div id="dropdowns">
           <select id="stateDropdown">

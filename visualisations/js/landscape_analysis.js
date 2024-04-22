@@ -29,7 +29,7 @@ d3.csv("../dataset/data.csv")
                     return acc;
                 }, {});
 
-            console.log(year, sortedDataForYear);
+            // console.log(year, sortedDataForYear);
 
             let seatsWonByINC = 0;
             let seatsWonByINC_I = 0;
@@ -81,7 +81,7 @@ d3.csv("../dataset/data.csv")
         const height = 600;
         const margin = { top: 50, right: 50, bottom: 70, left: 70 };
 
-        const svgContainer = d3.select("body")
+        const svgContainer = d3.select("#landscape_analysis")
             .append("div")
             .style("display", "flex")
             .style("justify-content", "center");
