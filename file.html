@@ -355,46 +355,41 @@
         fill: orange;
       }
       .arc73 text {
-            font: 10px sans-serif;
-            text-anchor: middle;
-        }
-        .arc73 path {
-            stroke: #fff;
-        }
+        font: 10px sans-serif;
+        text-anchor: middle;
+      }
+      .arc73 path {
+        stroke: #fff;
+      }
     </style>
   </head>
   <body>
-    <h1>Parliamentary Elections</h1>
-    <div id="scatterplot-container">
-      <div id="turnout-scatterplot"></div>
-      <div id="secondary-container">
-        <div id="dropdowns">
-          <select id="stateDropdown">
-            <option value="all">All States</option>
-          </select>
-          <select id="partyDropdown">
-            <option value="all">All Parties</option>
-          </select>
-        </div>
-        <div id="dashboard">
-          <p id="constituenciesInfo"></p>
-          <p id="seatsWonInfo"></p>
-        </div>
-      </div>
-    </div>
+    <h1 id="main-title">Unveiling the Electoral Landscape of India</h1>
 
-    <div id="landscape_analysis"></div>
+    <p id="some-content">
+      India, the world's largest democracy, has witnessed a rich and dynamic
+      electoral history. The Parliamentary General Elections are a testament to
+      the nation's democratic principles and the people's voice. This data
+      visualization project aims to unravel the intricate tapestry of Indian
+      elections, shedding light on voter behavior, political dynamics, and the
+      evolving landscape of power distribution across the country. <br />
+      Through a series of visualizations, we embark on a journey that spans
+      constituencies, states, and the entire nation, unveiling the electoral
+      trends over time. From the granular analysis of individual constituencies
+      to the broader patterns that shape the nation's political destiny, this
+      project offers an immersive and comprehensive exploration of India's
+      vibrant democratic process.
+    </p>
 
-    <div id="avg-turnout-container">
-      <div id="heading">
-        <h1>Average Turnout Percentage Throughout the Years (India)</h1>
-      </div>
-      <div id="avg-turnout-graph-container">
-        <svg id="avg-turnout-svg-container"></svg>
-      </div>
-    </div>
-
-    <div class="avg-turnout-tooltip"></div>
+    <!-- First Plot -->
+    <h2 id="plot-title">Local Electoral Participation</h2>
+    <p id="plot-description">
+      The scatter plot below visualizes the voter turnout percentage across
+      different constituencies in India. This visualization provides a thorough
+      examination of how participation trends have developed within each
+      constituency over time, facilitating a better understanding of the voter
+      engagement and the evolving landscape of political participation.
+    </p>
 
     <div id="pc-yearwise-turnout-container">
       <div id="heading">
@@ -438,27 +433,46 @@
 
     <div class="turnout-chloropleth-tooltip"></div>
 
-    <h1>Turnout% Race of Indian States over the Years (1962-2019)</h1>
+    <!-- Second Plot -->
+    <h2 id="plot-title">Nationwide Democratic Engagement</h2>
+    <p id="plot-description">
+      Voter turnout is a vital indicator of a nation's democratic health, and
+      this visualization captures the average turnout across India over the
+      years. By examining this metric, we can identify periods of heightened
+      participation or potential apathy. Fluctuations in turnout rates can shed
+      light on factors influencing voter mobilization, such as policy issues,
+      political campaigns, or broader societal trends.
+    </p>
+
+    <div id="avg-turnout-container">
+      <div id="heading">
+        <h1>Average Turnout Percentage Throughout the Years (India)</h1>
+      </div>
+      <div id="avg-turnout-graph-container">
+        <svg id="avg-turnout-svg-container"></svg>
+      </div>
+    </div>
+
+    <div class="avg-turnout-tooltip"></div>
+
+    <!-- Third Plot -->
+    <h2 id="plot-title">The Frontrunners of Voter Engagement</h2>
+    <p id="plot-description">
+      This dynamic 'turnout race' visualization highlights the top 15 states
+      that have consistently led the charge in fostering democratic
+      participation.
+    </p>
+
     <div id="chartdiv"></div>
-    <script src="visualisations/js/race_script.js"></script>
 
-    <input
-      class="statewise-constituencies-slider"
-      type="range"
-      min="1962"
-      max="2019"
-      value="1962"
-      step="1"
-      id="yearSlider"
-      oninput="updateYear()"
-      style="width: 300px"
-    />
-    <div id="yearDisplay">Year: <span id="selectedYear">1962</span></div>
-    <button onclick="getData()">Show Data</button>
+    <!-- Fourth Plot -->
+    <h2 id="plot-title">Domination of Political Parties</h2>
+    <p id="plot-description">
+      This multidimensional scatter plot unveils the interplay between voter
+      turnout, vote margins, and the domination of political parties.
+    </p>
 
-    <div id="statewise-constituencies-chart"></div>
-    <div class="statewise-constituencies-tooltip"></div>
-
+    <!-- Fifth Plot -->
     <div id="statewise-margin-container">
       <div id="sidebar">
         <h1>Election Day</h1>
@@ -529,12 +543,52 @@
       </div>
     </div>
 
+    <!-- Sixth Plot -->
+    <h2 id="plot-title">Election Results by State</h2>
+    <p id="plot-description">
+      This radial stacked bar graph offers a representation of the winning
+      parties in each state for a given year. Through this visualisation, we can
+      discern regional political preferences and the distribution of power
+      across the country.
+    </p>
+
+    <input
+      class="statewise-constituencies-slider"
+      type="range"
+      min="1962"
+      max="2019"
+      value="1962"
+      step="1"
+      id="yearSlider"
+      oninput="updateYear()"
+      style="width: 300px" />
+    <div id="yearDisplay">Year: <span id="selectedYear">1962</span></div>
+    <button onclick="getData()">Show Data</button>
+
+    <div id="statewise-constituencies-chart"></div>
+    <div class="statewise-constituencies-tooltip"></div>
+
+    <!-- Seventh Plot -->
+    <p id="plot-description">
+      This visualisation provides another view to parties that have won each
+      state.
+    </p>
+
     <div id="state-overview-container">
       <svg id="fortress-state-map"></svg>
 
       <div id="details"></div>
       <div id="fortress-bar-chart"></div>
     </div>
+
+    <!-- Eigth Plot -->
+    <h2 id="plot-title">Comparing State-Level Party Dynamics</h2>
+    <p id="plot-description">
+      This interactive line chart allows users to select a specific state and
+      two political parties, revealing the trends of these parties within that
+      state over time.
+    </p>
+
     <label for="state71">Select a state:</label>
     <select id="state71"></select>
 
@@ -545,35 +599,90 @@
     <select id="party271"></select>
     <button class="button71">Update Chart</button>
     <div id="chart71"></div>
+
+    <!-- Ninth Plot -->
+    <h2 id="plot-title">Distribution of Power Across the Nation</h2>
+    <svg class="k72"></svg>
+
+    <!-- Tenth Plot -->
+    <h2 id="plot-title">Inclusive Representation</h2>
+    <p id="plot-description">
+      India's commitment to inclusive representation is embodied in the
+      reservation of seats for marginalized communities, such as Scheduled
+      Castes (SCs) and Scheduled Tribes (STs). This interactive pie chart allows
+      users to select a specific state and visualize the distribution of seats
+      between general candidates and those reserved for SC/ST communities.
+    </p>
+    <select id="stateSelector73"></select>
+    <svg width="500" height="500" class="k73"></svg>
+
+    <!-- Eleventh Plot -->
+    <h2 id="plot-title">
+      Tracing the Transition of India's Political Landscape
+    </h2>
+    <p id="plot-description">
+      This visualization examines the evolution of major political parties in
+      the Indian Parliament, such as the Indian National Congress (INC), the
+      Bharatiya Janata Party (BJP), the Communist Party of India (Marxist)
+      [CPI(M)], and Others. <br />
+      It illuminates the remarkable ascent of the BJP, shedding light on the
+      shifting landscape of Indian politics. Furthermore, it challenges the
+      notion of India's transition to a two-party system by highlighting the
+      enduring significance of 'Other' parties, which still command substantial
+      vote shares.
+    </p>
+
+    <div id="landscape_analysis"></div>
+
+    <!-- Twellfth Plot -->
+    <h2 id="plot-title">Elections 2019: A Granular Perspective</h2>
+    <p id="plot-description">
+      This scatter plot offers a granular view of voter turnout, allowing for
+      comparisons across constituencies and the identification of outliers or
+      regions of particular interest. Through this, we get a more nuanced
+      understanding of political dynamics at the local level.
+    </p>
+
+    <div id="scatterplot-container">
+      <div id="turnout-scatterplot"></div>
+      <div id="secondary-container">
+        <div id="dropdowns">
+          <select id="stateDropdown">
+            <option value="all">All States</option>
+          </select>
+          <select id="partyDropdown">
+            <option value="all">All Parties</option>
+          </select>
+        </div>
+        <div id="dashboard">
+          <p id="constituenciesInfo"></p>
+          <p id="seatsWonInfo"></p>
+        </div>
+      </div>
+    </div>
+
     <div width="100000" height="1000">
       <canvas id="radarChart" width="1000" height="1000"></canvas>
     </div>
 
-    <svg class="k72"></svg>
-    <!-- <div class="tooltip"></div> -->
-    <select id="stateSelector73"></select>
-    <svg width="500" height="500" class="k73"></svg>
     <script src="visualisations/js/71.js" type="module"></script>
     <script src="visualisations/js/73.js" type="module"></script>
     <script src="visualisations/js/canvas.js" type="module"></script>
     <script
       src="visualisations/js/turnout_scatterplot.js"
-      type="module"
-    ></script>
+      type="module"></script>
     <script src="visualisations/js/72.js" type="module"></script>
     <script
       src="visualisations/js/landscape_analysis.js"
-      type="module"
-    ></script>
+      type="module"></script>
     <script src="visualisations/js/avg_turnout.js" type="module"></script>
     <script
       src="visualisations/js/pc_yearwise_turnout.js"
-      type="module"
-    ></script>
+      type="module"></script>
     <script
       src="visualisations/js/turnout_chloropleth.js"
-      type="module"
-    ></script>
+      type="module"></script>
+    <script src="visualisations/js/race_script.js"></script>
     <script>
       function updateYear() {
         const yearSlider = document.getElementById("yearSlider");
@@ -838,7 +947,6 @@
     <script src="visualisations/js/statewise_margin.js" type="module"></script>
     <script
       src="visualisations/js/statewise_overview.js"
-      type="module"
-    ></script>
+      type="module"></script>
   </body>
 </html>

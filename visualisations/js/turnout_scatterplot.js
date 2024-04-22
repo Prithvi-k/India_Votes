@@ -84,12 +84,7 @@ d3.csv("../dataset/2019_elections.csv")
                 )
             )
             .selectAll("text")
-            .attr("y", 0)
-            .attr("x", 9)
-            .attr("dy", ".35em")
-            .attr("opacity", 1)
-            .attr("transform", "rotate(90)")
-            .style("text-anchor", "start");
+            .remove();
 
         const yScale = d3.scaleLinear().domain([0, 100]).range([height, 0]);
 
@@ -116,6 +111,21 @@ d3.csv("../dataset/2019_elections.csv")
             .on("mouseout", function () {
                 tooltip.transition().duration(500).style("opacity", 0);
             });
+
+        svg.append("text")
+            .attr("class", "x label")
+            .attr("text-anchor", "middle")
+            .attr("x", width / 2)
+            .attr("y", height * 1.06)
+            .text("Constituency");
+
+        svg.append("text")
+            .attr("class", "y label")
+            .attr("text-anchor", "middle")
+            .attr("x", -height / 2)
+            .attr("y", -margin.left + 17)
+            .attr("transform", "rotate(-90)")
+            .text("Turnout");
 
         function updateDashboard(filteredData) {
             const selectedState =
