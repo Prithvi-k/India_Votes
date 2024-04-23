@@ -416,3 +416,47 @@ svg circle {
 .arc73 path {
   stroke: #fff;
 }
+.paralle {
+  display: flex;
+}
+.k74 {
+  flex:1;
+}
+.state74 {
+  stroke-width: 1;
+  stroke: #fff;
+}
+.state74:hover {
+  fill:rgb(7, 170, 7)
+}
+.k75 {
+  flex:1;
+}
+.state75 {
+  stroke-width: 1;
+  stroke: #000;
+}
+.state75:hover {
+  fill:rgb(7, 170, 7)
+}
+
+.k76 {
+  display: flex;
+}
+
+#map76 {
+  flex: 100;
+  padding-left: 100px; /*Distribute available space equally among these items*/
+  margin: 20px; /* Add some margin for spacing */
+}
+
+#piechart176 {
+  flex: 1; 
+  padding-top: 100px; /* Add padding at the top */
+}
+
+#piechart276 {
+  flex: 1; /* Distribute available space equally among these items */
+  margin: 20px; /* Add some margin for spacing */
+  padding-top: 100px; /* Add padding at the top */
+}
