@@ -67,4 +67,10 @@ Promise.all([
         .style("opacity", 0);
       d3.select(this).style("fill-opacity", 1);
     });
+    svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", 20)
+    .attr("text-anchor", "middle")
+    .style("font-size", "20px")
+    .text("Population per Constituency Averages over Indian States");
 });
