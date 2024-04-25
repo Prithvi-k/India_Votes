@@ -1,7 +1,4 @@
-# DV_Project_Team14
-This repo contains the code for out Data Visualisation Course Project
-- Netlify Hosted Link - https://gleeful-narwhal-1ae6f5.netlify.app
-- Youtube link (Final submission): https://youtu.be/FIzygTuDNIU
-- Website link: https://mohaksomani.github.io/DV_Project_Team14/
-- Repo link: https://github.com/MohakSomani/DV_Project_Team14
-- Youtube link (Mid-submission): https://youtu.be/elzoGRD17Is
+# India Votes 
+A data visualization project developed using D3.js. This project was completed as part of the CS4.302 Data Visualization Course Project in collaboration with [Mohak Somani](https://github.com/MohakSomani) and [Hemang Jain](https://github.com/hemang-n00b)
+
+You can view the live hosted webpage [here](https://india-votes.vercel.app/)
